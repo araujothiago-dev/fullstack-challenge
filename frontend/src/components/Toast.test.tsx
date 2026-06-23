@@ -1,6 +1,5 @@
-import { act, fireEvent, render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi } from "vitest";
+import { act, fireEvent, render } from "@testing-library/react";
+import { describe, expect, it, jest, spyOn } from "bun:test";
 import { ToastProvider, useToast } from "./Toast";
 
 function Harness() {
@@ -13,52 +12,46 @@ function Harness() {
   );
 }
 
-describe("ToastProvider", () => {
-  it("exibe a notificacao disparada via useToast", async () => {
-    const user = userEvent.setup();
-    render(
-      <ToastProvider>
-        <Harness />
-      </ToastProvider>,
-    );
+function renderHarness() {
+  return render(
+    <ToastProvider>
+      <Harness />
+    </ToastProvider>,
+  );
+}
 
-    await user.click(screen.getByText("erro"));
-    expect(screen.getByRole("alert")).toHaveTextContent("Falhou feio");
+describe("ToastProvider", () => {
+  it("exibe a notificacao disparada via useToast", () => {
+    const { getByText, getByRole } = renderHarness();
+
+    fireEvent.click(getByText("erro"));
+    expect(getByRole("alert")).toHaveTextContent("Falhou feio");
   });
 
-  it("remove a notificacao ao clicar nela", async () => {
-    const user = userEvent.setup();
-    render(
-      <ToastProvider>
-        <Harness />
-      </ToastProvider>,
-    );
+  it("remove a notificacao ao clicar nela", () => {
+    const { getByText, getByRole, queryByRole } = renderHarness();
 
-    await user.click(screen.getByText("ok"));
-    const toast = screen.getByRole("alert");
+    fireEvent.click(getByText("ok"));
+    const toast = getByRole("alert");
     expect(toast).toHaveTextContent("Deu certo");
 
-    await user.click(toast);
-    expect(screen.queryByRole("alert")).toBeNull();
+    fireEvent.click(toast);
+    expect(queryByRole("alert")).toBeNull();
   });
 
   it("some sozinha apos o tempo de auto-dismiss", () => {
-    vi.useFakeTimers();
+    jest.useFakeTimers();
     try {
-      render(
-        <ToastProvider>
-          <Harness />
-        </ToastProvider>,
-      );
-      fireEvent.click(screen.getByText("erro"));
-      expect(screen.getByRole("alert")).toHaveTextContent("Falhou feio");
+      const { getByText, getByRole, queryByRole } = renderHarness();
+      fireEvent.click(getByText("erro"));
+      expect(getByRole("alert")).toHaveTextContent("Falhou feio");
 
       act(() => {
-        vi.advanceTimersByTime(4000);
+        jest.advanceTimersByTime(4000);
       });
-      expect(screen.queryByRole("alert")).toBeNull();
+      expect(queryByRole("alert")).toBeNull();
     } finally {
-      vi.useRealTimers();
+      jest.useRealTimers();
     }
   });
 
@@ -67,7 +60,7 @@ describe("ToastProvider", () => {
       useToast();
       return null;
     }
-    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const spy = spyOn(console, "error").mockImplementation(() => {});
     expect(() => render(<Orphan />)).toThrow(/ToastProvider/);
     spy.mockRestore();
   });

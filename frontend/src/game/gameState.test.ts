@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "bun:test";
 import type { RoundDto } from "../api/types";
 import type { GameEvent } from "../realtime/events";
 import { initialState, reducer } from "./gameState";
