@@ -29,24 +29,24 @@ jobs:
         working-directory: services/wallets
 
   frontend:
-    name: Frontend (Vite)
+    name: Frontend (Bun)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: 20
+          bun-version: latest
 
       - name: Install dependencies
-        run: npm install
+        run: bun install
         working-directory: frontend
 
       - name: Typecheck
-        run: npm run typecheck
+        run: bun run typecheck
         working-directory: frontend
 
       - name: Test
-        run: npm test
+        run: bun test
         working-directory: frontend
