@@ -88,8 +88,12 @@ npm run dev            # Vite em http://localhost:5173 (já é redirect URI do K
 ### Testes
 
 ```bash
+# Backend
 cd services/games   && bun test
 cd services/wallets && bun test
+
+# Frontend
+cd frontend && bun test
 ```
 
 Os testes (unitários e e2e) rodam **sem precisar do Docker** — usam implementações
