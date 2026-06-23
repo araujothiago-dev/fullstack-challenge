@@ -4,6 +4,4 @@ node_modules
 tests/
 **/*.test.ts
 **/*.spec.ts
-.env
-.env.*
 README.md
