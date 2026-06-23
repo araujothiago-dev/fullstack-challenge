@@ -8,8 +8,8 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --port 3000",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "test": "bun test",
+    "test:watch": "bun test --watch"
   },
   "dependencies": {
     "keycloak-js": "^26.1.0",
