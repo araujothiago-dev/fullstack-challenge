@@ -55,7 +55,6 @@ a {
   color: var(--accent);
 }
 
-/* ------------------------------------------------------------------ layout */
 .app {
   max-width: 1180px;
   margin: 0 auto;
@@ -109,7 +108,6 @@ a {
   min-width: 0;
 }
 
-/* ------------------------------------------------------------------ cartões */
 .card {
   background: linear-gradient(180deg, var(--bg-elev), var(--bg-elev-2));
   border: 1px solid var(--border);
@@ -133,7 +131,6 @@ a {
   margin: 0 0 12px;
 }
 
-/* ------------------------------------------------------------- chip / pílula */
 .chip {
   display: inline-flex;
   align-items: center;
@@ -186,7 +183,6 @@ a {
   }
 }
 
-/* ----------------------------------------------------------------- gráfico */
 .stage {
   position: relative;
   padding: 0;
@@ -261,7 +257,6 @@ a {
   transition: width 0.1s linear;
 }
 
-/* --------------------------------------------------------- painel de aposta */
 .field {
   display: flex;
   flex-direction: column;
@@ -406,7 +401,6 @@ a {
   color: var(--red);
 }
 
-/* ------------------------------------------------------------------ carteira */
 .wallet {
   display: flex;
   flex-direction: column;
@@ -452,7 +446,6 @@ a {
   color: white;
 }
 
-/* ------------------------------------------------------- lista de apostas */
 .bets {
   display: flex;
   flex-direction: column;
@@ -539,7 +532,6 @@ a {
   padding: 24px 0;
 }
 
-/* ------------------------------------------------------------------ histórico */
 .history-row {
   display: flex;
   align-items: center;
@@ -599,7 +591,6 @@ a {
   color: var(--accent);
 }
 
-/* ----------------------------------------------------------- tela de login */
 .login-screen {
   min-height: 100vh;
   display: grid;
@@ -648,7 +639,6 @@ a {
   color: var(--accent);
 }
 
-/* ------------------------------------------------------------------ diversos */
 .center-screen {
   min-height: 100vh;
   display: grid;
@@ -748,4 +738,57 @@ a {
 }
 .kv .v.nomatch {
   color: var(--red);
+}
+
+.toast-stack {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: min(360px, calc(100vw - 36px));
+}
+
+.toast {
+  background: var(--bg-elev-2);
+  border: 1px solid var(--border);
+  border-left-width: 4px;
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  color: var(--text);
+  font-size: 14px;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  animation: toast-in 0.18s ease-out;
+}
+
+.toast-error {
+  border-left-color: var(--red);
+}
+.toast-success {
+  border-left-color: var(--green);
+}
+.toast-info {
+  border-left-color: var(--blue);
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 920px) {
+  .toast-stack {
+    left: 18px;
+    right: 18px;
+    max-width: none;
+  }
 }
