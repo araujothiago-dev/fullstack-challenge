@@ -185,13 +185,12 @@ O frontend é containerizado (build com Vite, servido por nginx) e sobe junto no
 
 ## Decisões e trade-offs
 
-- **Código compartilhado** — o contrato de mensageria da saga (exchange, routing
-  keys e payloads dos eventos débito/crédito) fica em `packages/shared`
-  (`@crash/shared`), consumido pelos dois serviços via workspace, eliminando a
-  duplicação. Já `Money` e os DTOs são mantidos por serviço de propósito: cada
-  bounded context é dono do seu modelo, e `Money` está acoplado à hierarquia de
-  erros/mapeamento HTTP de cada serviço (`@Catch(<Service>DomainError)`) —
-  compartilhá-lo vazaria essa decisão de apresentação para uma lib comum.
+- **Código por serviço (sem lib comum por ora)** — `Money`, DTOs e o contrato de
+  mensageria são mantidos em cada serviço. Cada bounded context é dono do seu
+  modelo, e `Money` está acoplado à hierarquia de erros/mapeamento HTTP de cada
+  serviço (`@Catch(<Service>DomainError)`). Extrair um `packages/shared` é uma
+  evolução prevista, mas exige reorganizar o build Docker (hoje cada serviço é
+  buildado com contexto isolado, que não enxerga pacotes irmãos do workspace).
 - **Stack do frontend** — o frontend usa CSS puro + `useReducer`/fetch em vez de
   Tailwind v4 / shadcn/ui / TanStack Query (stack sugerida), para manter o bundle
   enxuto e sem dependências de UI. Migrar para essa stack é uma evolução prevista.
