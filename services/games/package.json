@@ -9,7 +9,6 @@
     "test:e2e": "bun test tests/e2e"
   },
   "dependencies": {
-    "@crash/shared": "*",
     "@nestjs/common": "^11.1.17",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.1.17",
