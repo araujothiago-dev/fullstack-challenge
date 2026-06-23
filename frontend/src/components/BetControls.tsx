@@ -3,6 +3,7 @@ import { api, ApiError } from "../api/client";
 import { gameRules } from "../config";
 import type { GameState, LiveBet } from "../game/gameState";
 import { formatCents, formatReais } from "../utils/format";
+import { useToast } from "./Toast";
 
 interface Props {
   state: GameState;
@@ -23,7 +24,7 @@ export function BetControls({
 }: Props) {
   const [amount, setAmount] = useState("10");
   const [pending, setPending] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const toast = useToast();
 
   const myBet: LiveBet | undefined = useMemo(
     () => state.bets.find((b) => b.username === username),
@@ -43,10 +44,9 @@ export function BetControls({
   }
 
   const placeBet = async () => {
-    setError(null);
     const value = Number(amount);
     if (!Number.isFinite(value) || value < gameRules.minBet || value > gameRules.maxBet) {
-      setError(`Aposta entre ${gameRules.minBet} e ${gameRules.maxBet}.`);
+      toast.show(`Aposta entre ${gameRules.minBet} e ${gameRules.maxBet}.`);
       return;
     }
     setPending(true);
@@ -54,20 +54,21 @@ export function BetControls({
       await api.placeBet(value.toFixed(2));
       onWalletShouldRefresh();
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Não foi possível apostar.");
+      toast.show(err instanceof ApiError ? err.message : "Não foi possível apostar.");
     } finally {
       setPending(false);
     }
   };
 
   const cashOut = async () => {
-    setError(null);
     setPending(true);
     try {
-      await api.cashOut();
+      const result = await api.cashOut();
       onWalletShouldRefresh();
+      const at = result.cashOutMultiplier;
+      toast.show(at ? `Sacou em ${at.toFixed(2)}x! 🎉` : "Cash out realizado!", "success");
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Não foi possível sacar.");
+      toast.show(err instanceof ApiError ? err.message : "Não foi possível sacar.");
     } finally {
       setPending(false);
     }
@@ -82,7 +83,7 @@ export function BetControls({
         </span>
       </h3>
       {renderBody()}
-      <p className={`bet-hint${error ? " error" : ""}`}>{error ?? hint()}</p>
+      <p className="bet-hint">{hint()}</p>
     </div>
   );
 
