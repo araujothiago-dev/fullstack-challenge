@@ -55,7 +55,7 @@ npm run dev          # Vite em http://localhost:5173
 npm run build        # build de produção
 npm run preview      # serve o build em http://localhost:3000
 npm run typecheck    # checagem de tipos
-npm test             # Vitest + Testing Library
+bun test             # testes (runner nativo do Bun + Testing Library)
 ```
 
 ## Variáveis
