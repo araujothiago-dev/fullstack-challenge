@@ -2,15 +2,22 @@ name: CI
 
 on:
   push:
-    branches: ["**"]
+    branches:
+      - develop
+      - main
   pull_request:
+    branches:
+      - develop
+      - main
 
 jobs:
   backend:
-    name: Backend (Bun)
+    name: Backend
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -20,19 +27,21 @@ jobs:
       - name: Install dependencies
         run: bun install
 
-      - name: Test games service
+      - name: Test Games Service
         run: bun test
         working-directory: services/games
 
-      - name: Test wallets service
+      - name: Test Wallets Service
         run: bun test
         working-directory: services/wallets
 
   frontend:
-    name: Frontend (Bun)
+    name: Frontend
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -41,12 +50,11 @@ jobs:
 
       - name: Install dependencies
         run: bun install
-        working-directory: frontend
 
       - name: Typecheck
         run: bun run typecheck
         working-directory: frontend
 
-      - name: Test
+      - name: Test Frontend
         run: bun test
         working-directory: frontend
