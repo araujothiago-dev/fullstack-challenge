@@ -5,6 +5,7 @@ on:
     branches:
       - develop
       - main
+
   pull_request:
     branches:
       - develop
@@ -16,45 +17,40 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
+      - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
 
-      - name: Install dependencies
-        run: bun install
+      - run: bun install
 
-      - name: Test Games Service
-        run: bun test
+      - name: Games Tests
         working-directory: services/games
-
-      - name: Test Wallets Service
         run: bun test
+
+      - name: Wallets Tests
         working-directory: services/wallets
+        run: bun test
 
   frontend:
     name: Frontend
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
+      - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
 
-      - name: Install dependencies
-        run: bun install
+      - run: bun install
+        working-directory: frontend
 
       - name: Typecheck
+        working-directory: frontend
         run: bun run typecheck
-        working-directory: frontend
 
-      - name: Test Frontend
-        run: bun test
+      - name: Frontend Tests
         working-directory: frontend
+        run: bun test
