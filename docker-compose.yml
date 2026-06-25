@@ -101,7 +101,7 @@ services:
     ports:
       - "4001:4001"
     env_file:
-      - ./services/games/.env
+      - ./services/games/.env.example
     depends_on:
       postgres:
         condition: service_healthy
@@ -124,7 +124,7 @@ services:
     ports:
       - "4002:4002"
     env_file:
-      - ./services/wallets/.env
+      - ./services/wallets/.env.example
     depends_on:
       postgres:
         condition: service_healthy
